@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#0AEBD4">
+
+    <TextView
+        android:id="@+id/venue_name"
+        android:layout_width="0dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="29dp"
+        android:text="Venue Name"
+        android:textAllCaps="false"
+        android:textColor="#0B0B0B"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_name" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="352dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginEnd="30dp"
+        android:text="Address"
+        android:textAllCaps="false"
+        android:textColor="#0B0B0B"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/venue_name" />
+
+    <ImageView
+        android:id="@+id/event_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="30dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/event_name"
+        android:layout_width="354dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="27dp"
+        android:text="Event name"
+        android:textAllCaps="true"
+        android:textColor="#FFB600"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/event_image" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="256dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="5dp"
+        android:text="Date: Event Date"
+        android:textAllCaps="false"
+        android:textColor="#FF0008"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/ticket_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address" />
+
+    <TextView
+        android:id="@+id/price_range"
+        android:layout_width="253dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="2dp"
+        android:text="Price Range: Price"
+        android:textAllCaps="false"
+        android:textColor="#0B0B0B"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" />
+
+    <Button
+        android:id="@+id/ticket_button"
+        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+        android:layout_width="101dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="27dp"
+        android:linksClickable="false"
+        android:text="See Tickets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/date"
+        app:layout_constraintTop_toBottomOf="@+id/address" />
+</androidx.constraintlayout.widget.ConstraintLayout>
