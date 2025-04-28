@@ -42,7 +42,27 @@ class EventAdapter(private val events: ArrayList<Event>) : RecyclerView.Adapter<
         val eventImage = itemView.findViewById<ImageView>(R.id.event_image)
         val ticketButton = itemView.findViewById<Button>(R.id.ticket_button)
 
+        // init block is used as part of the primary constructor (It is executed when a ViewHolder instance is created)
+        init {
+            ticketButton.setOnClickListener {
+                val selectedPosition = adapterPosition
+                if (selectedPosition != RecyclerView.NO_POSITION) {  // Always good to check
+                    val currentEvent = events[selectedPosition]
+                    val url = currentEvent.url
+                    val context = itemView.context
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    context.startActivity(intent)
+                }
+            }
 
+            itemView.setOnClickListener {
+                val selectedPosition = adapterPosition
+                if (selectedPosition != RecyclerView.NO_POSITION) {
+                    val currentEvent = events[selectedPosition]
+                    // Optional: handle item click if needed
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -112,7 +132,7 @@ class EventAdapter(private val events: ArrayList<Event>) : RecyclerView.Adapter<
         }
 
         // Get the context for glide
-        var context = holder.itemView.context
+        val context = holder.itemView.context
 
         // Load the image from the url using Glide library
         if (highestQualityImage != null) {
@@ -121,14 +141,6 @@ class EventAdapter(private val events: ArrayList<Event>) : RecyclerView.Adapter<
                 .placeholder(R.drawable.ic_launcher_background) // In case the image is not loaded show this placeholder image
                 .circleCrop() // optional - Circle image with rounded corners
                 .into(holder.eventImage)
-        }
-
-        holder.ticketButton.setOnClickListener {
-            val url = currentItem.url
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            // Reassign context
-            context = holder.itemView.context
-            context.startActivity(intent)
         }
 
     }

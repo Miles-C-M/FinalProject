@@ -1,5 +1,6 @@
 package com.example.finalproject
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -103,6 +104,7 @@ class FirstFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val eventAPI = retrofit.create(EventService::class.java)
         eventAPI.searchEvents(apiKEY, cityName, eventType, "date,asc").enqueue(object : Callback<EventResponse> {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
                 val body = response.body()
 
@@ -132,7 +134,7 @@ class FirstFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private fun infoMissing(title: String) {
         // Set message
-        var message = if (title == "City not selected") {
+        val message = if (title == "City not selected") {
             "City cannot be empty. Please enter a city."
         } else {
             "Event category cannot be empty. Please select an event category."
