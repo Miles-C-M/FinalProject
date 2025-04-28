@@ -65,9 +65,9 @@ class FirstFragment : Fragment(), AdapterView.OnItemSelectedListener {
         searchButton.setOnClickListener {
             cityName = cityInput.text.toString()
             if (eventType.isEmpty() || eventType == "Error") {
-                eventMissing()
+                infoMissing("Event category not selected")
             } else if (cityName.isEmpty()) {
-                locationMissing()
+                infoMissing("City not selected")
             } else {
                 fetchEvents()
             }
@@ -130,19 +130,16 @@ class FirstFragment : Fragment(), AdapterView.OnItemSelectedListener {
         })
     }
 
-    private fun locationMissing() {
+    private fun infoMissing(title: String) {
+        // Set message
+        var message = if (title == "City not selected") {
+            "City cannot be empty. Please enter a city."
+        } else {
+            "Event category cannot be empty. Please select an event category."
+        }
         AlertDialog.Builder(requireContext())
-            .setTitle("Location missing")
-            .setMessage("City cannot be empty. Please enter a city.")
-            .setIcon(android.R.drawable.ic_delete)
-            .setPositiveButton("Okay", null)
-            .show()
-    }
-
-    private fun eventMissing() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Event category missing")
-            .setMessage("Event category cannot be empty. Please select an event category")
+            .setTitle(title)
+            .setMessage(message)
             .setIcon(android.R.drawable.ic_delete)
             .setPositiveButton("Okay", null)
             .show()
