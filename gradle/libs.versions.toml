@@ -2,7 +2,10 @@
 agp = "8.8.0"
 converterGson = "latest.version"
 converterGsonVersion = "2.11.0"
+firebaseBom = "33.13.0"
 glide = "4.16.0"
+googleServices = "4.4.2"
+gradle = "8.4.2"
 gson = "2.13.0"
 gsonVersion = "2.12.1"
 kotlin = "1.9.24"
@@ -19,9 +22,15 @@ retrofitVersion = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+com-google-firebase-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 converter-gson-v2110 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 gson-v2121 = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
