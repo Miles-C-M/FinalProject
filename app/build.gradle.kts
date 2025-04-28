@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.gms.google-services")
 }
 
 android {
@@ -37,8 +36,6 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.com.google.firebase.firebase.analytics)
     implementation(libs.gson.v2121)
     implementation(libs.retrofit.v2110)
     implementation(libs.converter.gson.v2110)
