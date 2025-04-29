@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.finalproject.EventAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,8 +44,8 @@ class FirstFragment : Fragment(), AdapterView.OnItemSelectedListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_first, container, false)
 
-        cityInput = view.findViewById(R.id.city_input)
-        spinner = view.findViewById(R.id.event_types)
+        cityInput = view.findViewById(R.id.search_input)
+        spinner = view.findViewById(R.id.search_types)
         recycler = view.findViewById(R.id.event_recycler)
         val searchButton = view.findViewById<Button>(R.id.search_button)
 
