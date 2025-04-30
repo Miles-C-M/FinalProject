@@ -41,7 +41,7 @@ class EventAdapter(private val events: ArrayList<Event>) : RecyclerView.Adapter<
         init {
             ticketButton.setOnClickListener {
                 val selectedPosition = adapterPosition
-                if (selectedPosition != RecyclerView.NO_POSITION) {  // Always good to check
+                if (selectedPosition != RecyclerView.NO_POSITION) {
                     val currentEvent = events[selectedPosition]
                     val url = currentEvent.url
                     val context = itemView.context

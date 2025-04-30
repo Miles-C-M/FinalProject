@@ -13,7 +13,7 @@ interface MusicService {
                             @Query("api_key") apiKey: String,
                             @Query("format") format: String,
                             @Query("limit") limit: Int,
-                            @Query("period") period: String): Call<TopTrackResponse>
+                            @Query("period") period: String): Call<UserTopTrackResponse>
 
     @GET("2.0/")
     fun searchUserTopAlbums(@Query("method") method: String,

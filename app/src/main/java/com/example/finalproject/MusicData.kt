@@ -3,7 +3,7 @@ package com.example.finalproject
 import com.google.gson.annotations.SerializedName
 
 // User's top tracks
-data class TopTrackResponse(
+data class UserTopTrackResponse(
     @SerializedName("toptracks")
     val toptracks: TopTracks
 )
@@ -14,18 +14,15 @@ data class TopTracks (
 
 data class Track (
     val name: String,
-    val image: MusicImages,
+    val image: List<MusicImage>,
     val artist: Artist,
     val url: String,
     val playcount: Int
 )
 
-data class MusicImages(
-    val images: List<MusicImage>
-)
-
 data class MusicImage (
     val size: String,
+    @SerializedName("#text")
     val text: String
 )
 
@@ -46,7 +43,7 @@ data class TopAlbums (
 
 data class Album (
     val artist: Artist,
-    val image: MusicImages,
+    val image: List<MusicImage>,
     val url: String,
     val playcount: Int,
     val name: String
@@ -63,7 +60,7 @@ data class TopArtists(
 )
 
 data class ArtistData(
-    val image: MusicImages,
+    val image: List<MusicImage>,
     val url: String,
     val playcount: Int,
     val name: String

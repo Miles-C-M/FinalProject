@@ -19,30 +19,42 @@
 
     <TextView
         android:id="@+id/song_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="282dp"
+        android:layout_height="34dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="114dp"
+        android:layout_marginEnd="11dp"
         android:text="song_name"
         android:textColor="#5DFF00"
-        android:textSize="34sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/album_art"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/artist_name"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="280dp"
+        android:layout_height="32dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="167dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="13dp"
         android:text="artist_name"
         android:textColor="#5DFF00"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/album_art"
         app:layout_constraintTop_toBottomOf="@+id/song_name" />
+
+    <TextView
+        android:id="@+id/playcount"
+        android:layout_width="277dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="13dp"
+        android:text="100"
+        android:textAlignment="textEnd"
+        android:textColor="#5DFF00"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artist_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
