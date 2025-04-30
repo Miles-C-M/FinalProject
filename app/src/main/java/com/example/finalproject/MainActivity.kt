@@ -11,13 +11,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Begin on profile fragment
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.selectedItemId = R.id.profile
 
         val firstFragment = FirstFragment()
         val secondFragment = SecondFragment()
         val thirdFragment = ThirdFragment()
 
-        setCurrentFragment(firstFragment)
+        setCurrentFragment(secondFragment)
 
         bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
