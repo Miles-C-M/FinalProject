@@ -2,4 +2,25 @@
     <string name="app_name">FinalProject</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="music_finder">Music Finder</string>
+    <string name="login_register">Login/Register</string>
+    <string name="todo">TODO</string>
+    <string name="app_logo">app logo</string>
+    <string name="price_range_price">Price Range: Price</string>
+    <string name="see_tickets">See Tickets</string>
+    <string name="date_event_date">Date: Event Date</string>
+    <string name="event_name">Event name</string>
+    <string name="event_image">event image</string>
+    <string name="address">Address</string>
+    <string name="venue_name">Venue Name</string>
+    <string name="search">Search</string>
+    <string name="find_tickets_around_you">Find Tickets Around You</string>
+    <string name="city">City</string>
+    <string name="account">Account</string>
+    <string name="find_music_you_love">Find Music you Love</string>
+    <string name="last_fm_username_artist_or_song">Last.fm username, artist, or song</string>
+    <string name="album_art">album art</string>
+    <string name="song_name">song_name</string>
+    <string name="artist_name">artist_name</string>
+    <string name="_100">100</string>
 </resources>
