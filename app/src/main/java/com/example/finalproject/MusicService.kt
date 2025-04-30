@@ -31,6 +31,12 @@ interface MusicService {
                              @Query("limit") limit: Int,
                              @Query("period") period: String): Call<TopArtistResponse>
 
+//    @GET("2.0/")
+//    fun searchTracks(@Query("method") method: String,
+//                     @Query("track") track: String,
+//                     @Query("api_key") apiKey: String,
+//                     @Query("format") format: String): Call<SearchTrackResponse>
+
     // Search for artists
     // https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=Hi-C&api_key=4d71bfa02b7255770d74c8147ad16883&format=json
 
