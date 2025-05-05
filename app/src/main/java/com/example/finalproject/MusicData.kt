@@ -31,8 +31,16 @@ data class Artist (
     val name: String
 )
 
-//// Artist's top tracks
-//data class TopArtistResponse(
-//    @SerializedName("topartists")
-//    val topalbums: TopAlbums
-//)
+// Used to grab album artwork since Last.FM API is returning a broken image with current calls
+data class TrackInfoResponse(
+    @SerializedName("track")
+    val track: TrackInfo
+)
+
+data class TrackInfo(
+    val album: Album
+)
+
+data class Album (
+    val image: List<MusicImage>
+)
