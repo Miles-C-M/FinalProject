@@ -3,7 +3,7 @@ package com.example.finalproject
 import com.google.gson.annotations.SerializedName
 
 // User's top tracks
-data class UserTopTrackResponse(
+data class TopTracksResponse(
     @SerializedName("toptracks")
     val toptracks: TopTracks
 )
@@ -31,37 +31,8 @@ data class Artist (
     val name: String
 )
 
-// User's top albums
-data class TopAlbumResponse(
-    @SerializedName("topalbums")
-    val topalbums: TopAlbums
-)
-
-data class TopAlbums (
-    val album: List<Album>
-)
-
-data class Album (
-    val artist: Artist,
-    val image: List<MusicImage>,
-    val url: String,
-    val playcount: Int,
-    val name: String
-)
-
-// User's top artists
-data class TopArtistResponse(
-    @SerializedName("topartists")
-    val topartists: TopArtists
-)
-
-data class TopArtists(
-    val artist: List<ArtistData>
-)
-
-data class ArtistData(
-    val image: List<MusicImage>,
-    val url: String,
-    val playcount: Int,
-    val name: String
-)
+//// Artist's top tracks
+//data class TopArtistResponse(
+//    @SerializedName("topartists")
+//    val topalbums: TopAlbums
+//)

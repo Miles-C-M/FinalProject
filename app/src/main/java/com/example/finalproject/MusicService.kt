@@ -13,37 +13,26 @@ interface MusicService {
                             @Query("api_key") apiKey: String,
                             @Query("format") format: String,
                             @Query("limit") limit: Int,
-                            @Query("period") period: String): Call<UserTopTrackResponse>
+                            @Query("period") period: String): Call<TopTracksResponse>
 
+    // https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=Hi-C&api_key=4d71bfa02b7255770d74c8147ad16883&format=json
     @GET("2.0/")
-    fun searchUserTopAlbums(@Query("method") method: String,
-                            @Query("user") username: String,
-                            @Query("api_key") apiKey: String,
-                            @Query("format") format: String,
-                            @Query("limit") limit: Int,
-                            @Query("period") period: String): Call<TopAlbumResponse>
+    fun searchArtistTopTracks(@Query("method") method: String,
+                              @Query("artist") username: String,
+                              @Query("api_key") apiKey: String,
+                              @Query("format") format: String): Call<TopTracksResponse>
 
-    @GET("2.0/")
-    fun searchUserTopArtists(@Query("method") method: String,
-                             @Query("user") username: String,
-                             @Query("api_key") apiKey: String,
-                             @Query("format") format: String,
-                             @Query("limit") limit: Int,
-                             @Query("period") period: String): Call<TopArtistResponse>
+//    @GET("2.0/")
+//    fun searchLastFmTracks(@Query("method") method: String,
+//                           @Query("user") username: String,
+//                           @Query("api_key") apiKey: String,
+//                           @Query("format") format: String,
+//                           @Query("limit") limit: Int,
+//                           @Query("period") period: String): Call<TopArtistResponse>
 
 //    @GET("2.0/")
 //    fun searchTracks(@Query("method") method: String,
 //                     @Query("track") track: String,
 //                     @Query("api_key") apiKey: String,
 //                     @Query("format") format: String): Call<SearchTrackResponse>
-
-    // Search for artists
-    // https://ws.audioscrobbler.com/2.0/?method=artist.search&artist=Hi-C&api_key=4d71bfa02b7255770d74c8147ad16883&format=json
-
-    // Search for artists top albums
-    // https://ws.audioscrobbler.com/2.0/?method=artist.getTopAlbums&artist=Hi-C&api_key=4d71bfa02b7255770d74c8147ad16883&format=json
-
-    // Search for artists top songs
-    // https://ws.audioscrobbler.com/2.0/?method=artist.getTopTracks&artist=Hi-C&api_key=4d71bfa02b7255770d74c8147ad16883&format=json
-
 }
