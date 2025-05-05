@@ -37,6 +37,21 @@ android {
 }
 
 dependencies {
+    // Import the Firebase BoM
+   implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+
+    // Import Firestore
+    implementation("com.google.firebase:firebase-firestore:25.1.4")
+
+
+    // Add the dependencies for any other Firebase products you want to use
+    // See https://firebase.google.com/docs/android/setup#available-libraries
+    // For example, add the dependencies for Firebase Authentication
+    implementation("com.google.firebase:firebase-auth")
+    //implementation(libs.firebase.auth.ktx)
+
+    // FirebaseUI for Firebase Auth
+    implementation("com.firebaseui:firebase-ui-auth:9.0.0")
     implementation(libs.gson.v2121)
     implementation(libs.retrofit.v2110)
     implementation(libs.converter.gson.v2110)
