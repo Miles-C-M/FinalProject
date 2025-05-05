@@ -44,3 +44,27 @@ data class TrackInfo(
 data class Album (
     val image: List<MusicImage>
 )
+
+// Search tracks
+data class SearchTrackResponse(
+    @SerializedName("results")
+    val results: SearchResults
+)
+
+data class SearchResults(
+    @SerializedName("trackmatches")
+    val trackmatches: TrackMatches
+)
+
+data class TrackMatches(
+    @SerializedName("track")
+    val track1: List<Track1>
+)
+
+// Alternate track data class for track search
+data class Track1(
+    val name: String,
+    val url: String,
+    val artist: String,
+    val image: List<MusicImage>
+)

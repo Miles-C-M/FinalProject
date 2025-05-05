@@ -138,33 +138,78 @@ class ThirdFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     }
                 })
             }
-            "artist.gettoptracks" -> eventAPI.searchArtistTopTracks(searchType, search, apiKEY, "json").enqueue(object : Callback<TopTracksResponse> {
-                @SuppressLint("NotifyDataSetChanged")
-                override fun onResponse(call: Call<TopTracksResponse>, response: Response<TopTracksResponse>) {
-                    val body = response.body()
+            "artist.gettoptracks" -> {
+                eventAPI.searchArtistTopTracks(searchType, search, apiKEY, "json").enqueue(object : Callback<TopTracksResponse> {
+                    @SuppressLint("NotifyDataSetChanged")
+                    override fun onResponse(call: Call<TopTracksResponse>, response: Response<TopTracksResponse>) {
+                        val body = response.body()
 
-                    if (!response.isSuccessful || body == null) {
-                        Toast.makeText(requireContext(), "Something went wrong. Try again.", Toast.LENGTH_LONG).show()
-                        return
+                        if (!response.isSuccessful || body == null) {
+                            Toast.makeText(requireContext(), "Something went wrong. Try again.", Toast.LENGTH_LONG).show()
+                            return
+                        }
+
+                        val topTracks = body.toptracks
+                        val tracks = topTracks?.track
+
+                        if (tracks.isNullOrEmpty()) {
+                            Toast.makeText(requireContext(), "No tracks found for your search.", Toast.LENGTH_LONG).show()
+                            return
+                        }
+
+                        userTracksList.clear()
+                        userTracksList.addAll(tracks)
+                        adapter.notifyDataSetChanged()
                     }
 
-                    val topTracks = body.toptracks
-                    val tracks = topTracks?.track
-
-                    if (tracks.isNullOrEmpty()) {
-                        Toast.makeText(requireContext(), "No tracks found for your search.", Toast.LENGTH_LONG).show()
-                        return
+                    override fun onFailure(call: Call<TopTracksResponse>, t: Throwable) {
+                        Log.d(TAG, "onFailure: $t")
                     }
+                })
+            }
+            "track.search" -> {
+                eventAPI.searchTracks(searchType, search, apiKEY, "json")
+                    .enqueue(object : Callback<SearchTrackResponse> {
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onResponse(
+                            call: Call<SearchTrackResponse>,
+                            response: Response<SearchTrackResponse>
+                        ) {
+                            val body = response.body()
 
-                    userTracksList.clear()
-                    userTracksList.addAll(tracks)
-                    adapter.notifyDataSetChanged()
-                }
+                            if (!response.isSuccessful || body == null) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Something went wrong. Try again.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return
+                            }
 
-                override fun onFailure(call: Call<TopTracksResponse>, t: Throwable) {
-                    Log.d(TAG, "onFailure: $t")
-                }
-            })
+                            val topTracks = body.results.trackmatches
+                            val tracks = topTracks?.track1
+                            Log.d(TAG, "tracks: $tracks")
+
+                            if (tracks.isNullOrEmpty()) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "No tracks found for your search.",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                return
+                            }
+
+                            val convertedTracks: List<Track> = tracks.map { it.toTrack() }
+                            userTracksList.clear()
+                            userTracksList.addAll(convertedTracks)
+                            adapter.notifyDataSetChanged()
+                        }
+
+                        override fun onFailure(call: Call<SearchTrackResponse>, t: Throwable) {
+                            Log.d(TAG, "onFailure: $t")
+                        }
+                    })
+            }
         }
     }
 
@@ -181,6 +226,17 @@ class ThirdFragment : Fragment(), AdapterView.OnItemSelectedListener {
             .setIcon(android.R.drawable.ic_delete)
             .setPositiveButton("Okay", null)
             .show()
+    }
+
+    // Converts track search results to Track objects so I don't have to make another adapter
+    fun Track1.toTrack(): Track {
+        return Track(
+            name = this.name,
+            url = this.url,
+            image = this.image,
+            artist = Artist(name = this.artist, url = ""), // URL not available from search results
+            playcount = 0 // Not provided in search results
+        )
     }
 }
 

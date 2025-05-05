@@ -22,12 +22,12 @@ interface MusicService {
                               @Query("api_key") apiKey: String,
                               @Query("format") format: String): Call<TopTracksResponse>
 
-    // https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=4d71bfa02b7255770d74c8147ad16883&artist=death&track=symbolic&format=json
-//    @GET("2.0/")
-//    fun searchTracks(@Query("method") method: String,
-//                     @Query("track") track: String,
-//                     @Query("api_key") apiKey: String,
-//                     @Query("format") format: String): Call<SearchTrackResponse>
+    // https://ws.audioscrobbler.com/2.0/?method=track.search&api_key=4d71bfa02b7255770d74c8147ad16883&track=xtal&format=json
+    @GET("2.0/")
+    fun searchTracks(@Query("method") method: String,
+                     @Query("track") track: String,
+                     @Query("api_key") apiKey: String,
+                     @Query("format") format: String): Call<SearchTrackResponse>
 
 
     // https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=4d71bfa02b7255770d74c8147ad16883&artist=death&track=symbolic&format=json

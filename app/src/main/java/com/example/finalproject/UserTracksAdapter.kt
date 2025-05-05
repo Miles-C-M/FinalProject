@@ -43,7 +43,14 @@ class UserTracksAdapter(private val tracks: ArrayList<Track>) :
 
         holder.songName.text = currentItem.name
         holder.artistName.text = currentItem.artist.name
-        holder.playcount.text = currentItem.playcount.toString()
+
+        if (currentItem.playcount == 0) {
+            holder.playcount.visibility = View.GONE
+        } else {
+            holder.playcount.visibility = View.VISIBLE
+            holder.playcount.text = currentItem.playcount.toString()
+        }
+
 
         // Use a callback to load the image asynchronously
         fetchTrackArtwork(currentItem.artist.name, currentItem.name) { imageUrl ->
