@@ -38,9 +38,19 @@ class SecondFragment : Fragment() {
                 .placeholder(R.drawable.app_logo)
                 .into(view.findViewById<ImageView>(R.id.userImage))
         }
+        view.findViewById<Toolbar>(R.id.toolbar).setOnClickListener {
+            AuthUI.getInstance().signOut(requireContext())
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                    // After logout, you can start the RegisterActivity again
+                    startRegisterActivity()
+                    }
+                }
+        }
 
         return view
     }
+
 
     private fun startRegisterActivity() {
         val intent = Intent(requireContext(), RegisterActivity::class.java)
