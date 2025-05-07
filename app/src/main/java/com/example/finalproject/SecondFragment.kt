@@ -37,31 +37,6 @@ class SecondFragment : Fragment() {
                 .load(currentUser.photoUrl)
                 .placeholder(R.drawable.app_logo)
                 .into(view.findViewById<ImageView>(R.id.userImage))
-
-            // Set up Toolbar
-            val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
-            toolbar.inflateMenu(R.menu.menu_options)
-            Log.d(TAG, "Toolbar menu inflated")
-
-            toolbar.setOnMenuItemClickListener { item ->
-                Log.d(TAG, "onCreateView: ${item.itemId}")
-                when (item.itemId) {
-                    R.id.action_logout -> {
-                        Toast.makeText(requireContext(), "Logout", Toast.LENGTH_SHORT).show()
-
-                        AuthUI.getInstance().signOut(requireContext())
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    startRegisterActivity()
-                                } else {
-                                    Log.e(TAG, "Logout failed: ${task.exception}")
-                                }
-                            }
-                        true
-                    }
-                    else -> false
-                }
-            }
         }
 
         return view

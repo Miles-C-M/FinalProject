@@ -14,10 +14,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/ic_launcher_background"
         android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:navigationIcon="@drawable/settings" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/profile" />
 
     <ImageView
         android:id="@+id/userImage"
