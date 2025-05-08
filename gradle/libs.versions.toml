@@ -19,9 +19,12 @@ activity = "1.10.1"
 constraintlayout = "2.2.1"
 retrofit = "2.9.0"
 retrofitVersion = "2.11.0"
+windowCore = "version"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-window = { module = "androidx.window:window", version.ref = "windowCore" }
+androidx-window-core = { module = "androidx.window:window-core", version.ref = "windowCore" }
 com-google-firebase-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 converter-gson-v2110 = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGsonVersion" }

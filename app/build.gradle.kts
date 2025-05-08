@@ -52,6 +52,7 @@ dependencies {
 
     // FirebaseUI for Firebase Auth
     implementation("com.firebaseui:firebase-ui-auth:8.0.0")
+
     implementation(libs.gson.v2121)
     implementation(libs.retrofit.v2110)
     implementation(libs.converter.gson.v2110)

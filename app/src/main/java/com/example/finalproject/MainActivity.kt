@@ -1,73 +1,102 @@
 package com.example.finalproject
 
-import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SensorEventListener {
+
+    private lateinit var sensorManager: SensorManager
+    private var lastShakeTime: Long = 0
+    private val shakeThreshold = 15.0  // Acceleration threshold to trigger shake (m/s²)
+    private val debounceTime = 1000L   // 1 second debounce to avoid repeated triggers
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // #### Authentication using FirebaseAuth #####
-
-        // Get instance of the FirebaseAuth
         val currentUser = FirebaseAuth.getInstance().currentUser
-
-        // If currentUser is null, open the RegisterActivity
         if (currentUser == null) {
             startRegisterActivity()
         } else {
-            // Begin on profile fragment
             val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
             bottomNavigationView.selectedItemId = R.id.profile
 
-            val firstFragment = FirstFragment()
-            val secondFragment = SecondFragment()
-            val thirdFragment = ThirdFragment()
+            setCurrentFragment(SecondFragment())
+            Toast.makeText(this, "Welcome ${currentUser.displayName}. Shake to log out.", Toast.LENGTH_LONG).show()
 
-            setCurrentFragment(secondFragment)
-            Toast.makeText(this, "Welcome ${currentUser.displayName}. Shake to leave.", Toast.LENGTH_LONG).show()
-
-            bottomNavigationView.setOnNavigationItemSelectedListener {
+            bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
-                    R.id.events -> setCurrentFragment(firstFragment)
-                    R.id.profile -> setCurrentFragment(secondFragment)
-                    R.id.music -> setCurrentFragment(thirdFragment)
-
+                    R.id.events -> setCurrentFragment(FirstFragment())
+                    R.id.profile -> setCurrentFragment(SecondFragment())
+                    R.id.music -> setCurrentFragment(ThirdFragment())
                 }
                 true
             }
         }
 
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
     }
 
-    private fun setCurrentFragment(fragment: Fragment) =
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment, fragment)
-            commit()
-        }
+    override fun onResume() {
+        super.onResume()
+        sensorManager.registerListener(
+            this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
+    }
 
-    // An helper function to start our RegisterActivity
+    override fun onPause() {
+        super.onPause()
+        sensorManager.unregisterListener(this)
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val acceleration = Math.sqrt((x * x + y * y + z * z).toDouble())
+
+            if (acceleration > shakeThreshold) {
+                val now = System.currentTimeMillis()
+                if (now - lastShakeTime > debounceTime) {
+                    lastShakeTime = now
+                    Log.d("MainActivity", "Shake detected with acceleration: $acceleration")
+                    startRegisterActivity()
+                }
+            }
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        // Not used
+    }
+
+    private fun setCurrentFragment(fragment: androidx.fragment.app.Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flFragment, fragment)
+            .commit()
+    }
+
     private fun startRegisterActivity() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
-        // Make sure to call finish() to remove this activity from the backstack, otherwise the user
-        // would be able to go back to the MainActivity
-        finish()
+        AuthUI.getInstance().signOut(this)
+            .addOnCompleteListener {
+                val intent = Intent(this, RegisterActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
     }
 }
