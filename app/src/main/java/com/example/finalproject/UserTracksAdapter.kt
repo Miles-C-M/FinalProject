@@ -1,5 +1,7 @@
 package com.example.finalproject
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,11 +32,36 @@ class UserTracksAdapter(private val tracks: ArrayList<Track>) :
         val artistName = itemView.findViewById<TextView>(R.id.artist_name)
         val albumArt = itemView.findViewById<ImageView>(R.id.album_art)
         val playcount = itemView.findViewById<TextView>(R.id.playcount)
+
+        init {
+            // Attach a click listener to the entire row view
+            itemView.setOnClickListener {
+                // adapterPosition refers to the position of the item associated with the ViewHolder within the RecyclerView's dataset
+                val selectedItem = adapterPosition
+                Toast.makeText(itemView.context, "You clicked on $selectedItem", Toast.LENGTH_SHORT).show()
+            }
+
+
+            // Set onLongClickListener to show a toast message and remove the selected row item from the list
+            // Make sure to add inner in front of MyViewHolder class to get access of object of outer class such as contacts array
+            itemView.setOnLongClickListener {
+
+                val selectedItem = adapterPosition
+                if (selectedItem != RecyclerView.NO_POSITION) {
+                    val track = tracks[selectedItem]
+                    val url = track.url // Ensure the Track model has a valid `url` field
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                    itemView.context.startActivity(intent)
+                }
+                return@setOnLongClickListener true
+            }
+
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.row_item_tracks, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item_tracks, parent, false)
         return MyViewHolder(view)
     }
 
