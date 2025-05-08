@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="FullscreenTheme" parent="Theme.FinalProject">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@drawable/app_logo</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@color/lime_text</item>
+        <item name="colorControlActivated">@color/black_bg</item>
+        <item name="colorControlHighlight">@color/white</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/lime_text</item>
+    </style>
+
+    <style name="LoginTheme" parent="FirebaseUI">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black_bg</item>
+        <item name="colorAccent">@color/white</item>
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+        <item name="colorControlHighlight">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+
+        <item name="android:textColorSecondary">@android:color/white</item>
+
+        <item name="android:windowBackground">@color/lime_text</item>
+        <item name="android:icon">@drawable/app_logo</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <style name="FirebaseUI.EditText">
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="colorControlActivated">@color/lime_text</item>
+        <item name="colorControlHighlight">@color/lime_text</item>
+        <item name="android:textColorHint">@color/lime_text</item>
+        <item name="android:textColor">@color/lime_text</item>
+    </style>
+
+    <style name="FirebaseUI.Text.TextInputLayout" parent="@style/FirebaseUI.EditText" />
+
+    <style name="FirebaseUI.Text.HintText" parent="@style/FirebaseUI.EditText" />
+
+    <style name="FirebaseUI.Text.Link">
+        <item name="android:textColor">@color/black</item>
+    </style>
+</resources>

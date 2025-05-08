@@ -30,7 +30,6 @@ class SecondFragment : Fragment() {
         if (currentUser == null) {
             Log.d(TAG, "onCreateView: currentUser is null")
         } else {
-            Toast.makeText(requireContext(), "Welcome ${currentUser.displayName}. Shake to leave.", Toast.LENGTH_LONG).show()
             // Display user information
             view.findViewById<TextView>(R.id.usernameText).text = currentUser.displayName
 

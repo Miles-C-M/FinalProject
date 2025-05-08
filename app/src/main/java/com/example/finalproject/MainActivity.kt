@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
             val thirdFragment = ThirdFragment()
 
             setCurrentFragment(secondFragment)
+            Toast.makeText(this, "Welcome ${currentUser.displayName}. Shake to leave.", Toast.LENGTH_LONG).show()
 
             bottomNavigationView.setOnNavigationItemSelectedListener {
                 when (it.itemId) {

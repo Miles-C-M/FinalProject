@@ -82,6 +82,7 @@ class RegisterActivity : AppCompatActivity() {
                 val signInIntent = AuthUI.getInstance()
                     .createSignInIntentBuilder()
                     .setAvailableProviders(providers)
+                    .setTheme(R.style.LoginTheme)
                     .setLogo(R.drawable.app_logo)
                     .setAlwaysShowSignInMethodScreen(false) // use this if you have only one provider and really want the see the signin page
                     .setIsSmartLockEnabled(false)
