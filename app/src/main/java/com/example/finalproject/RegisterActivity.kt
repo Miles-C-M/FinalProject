@@ -74,7 +74,6 @@ class RegisterActivity : AppCompatActivity() {
             findViewById<Button>(R.id.login_button).setOnClickListener {
                 // Choose authentication providers -- make sure enable them on your firebase account first
                 val providers = arrayListOf(
-                    AuthUI.IdpConfig.EmailBuilder().build(),
                     AuthUI.IdpConfig.GoogleBuilder().build()
                 )
 

@@ -2,6 +2,7 @@ package com.example.finalproject
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -10,6 +11,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.window.core.layout.WindowHeightSizeClass
+import androidx.window.core.layout.WindowSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
+import androidx.window.layout.WindowMetricsCalculator
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +28,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = if (compactScreen())
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT else
+            ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+
+
         setContentView(R.layout.activity_main)
 
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -33,7 +43,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             bottomNavigationView.selectedItemId = R.id.profile
 
             setCurrentFragment(SecondFragment())
-            Toast.makeText(this, "Welcome ${currentUser.displayName}. Shake to log out.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Hello, ${currentUser.displayName}. Shake to log out.", Toast.LENGTH_LONG).show()
 
             bottomNavigationView.setOnItemSelectedListener {
                 when (it.itemId) {
@@ -98,5 +108,17 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                 startActivity(intent)
                 finish()
             }
+    }
+
+    /** Determines whether the device has a compact screen. **/
+    private fun compactScreen() : Boolean {
+        val metrics = WindowMetricsCalculator.getOrCreate().computeMaximumWindowMetrics(this)
+        val width = metrics.bounds.width()
+        val height = metrics.bounds.height()
+        val density = resources.displayMetrics.density
+        val windowSizeClass = WindowSizeClass.compute(width/density, height/density)
+
+        return windowSizeClass.windowWidthSizeClass == WindowWidthSizeClass.COMPACT ||
+                windowSizeClass.windowHeightSizeClass == WindowHeightSizeClass.COMPACT
     }
 }
