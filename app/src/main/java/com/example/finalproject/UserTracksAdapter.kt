@@ -57,19 +57,23 @@ class UserTracksAdapter(
                         Log.e(TAG, "Failed to remove favorite", it)
                     }
                 } else {
-                    val data = mapOf(
-                        "name" to track.name,
-                        "artist" to track.artist.name,
-                        "url" to track.url
-                    )
-                    favRef.set(data).addOnSuccessListener {
-                        itemView.setBackgroundColor(
-                            ContextCompat.getColor(itemView.context, android.R.color.holo_green_light)
+                    // Fetch the track artwork asynchronously
+                    fetchTrackArtwork(track.artist.name, track.name) { art ->
+                        val data = mapOf(
+                            "name" to track.name,
+                            "artist" to track.artist.name,
+                            "url" to track.url,
+                            "artwork" to art
                         )
-                        itemView.tag = true
-                        Toast.makeText(itemView.context, "Added to favorites", Toast.LENGTH_SHORT).show()
-                    }.addOnFailureListener {
-                        Log.e(TAG, "Failed to add favorite", it)
+                        favRef.set(data).addOnSuccessListener {
+                            itemView.setBackgroundColor(
+                                ContextCompat.getColor(itemView.context, android.R.color.holo_green_light)
+                            )
+                            itemView.tag = true
+                            Toast.makeText(itemView.context, "Added to favorites", Toast.LENGTH_SHORT).show()
+                        }.addOnFailureListener {
+                            Log.e(TAG, "Failed to add favorite", it)
+                        }
                     }
                 }
             }
