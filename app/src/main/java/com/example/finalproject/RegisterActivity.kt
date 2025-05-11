@@ -16,10 +16,13 @@ import androidx.window.layout.WindowMetricsCalculator
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
 
     private val TAG = "RegisterActivity"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +34,7 @@ class RegisterActivity : AppCompatActivity() {
 
         // Get instance of the FirebaseAuth
         val currentUser = FirebaseAuth.getInstance().currentUser
-
+        val fStore = FirebaseFirestore.getInstance()
 
         // If currentUser is not null, we have a user and go back to the MainActivity
         if (currentUser != null) {
@@ -51,11 +54,26 @@ class RegisterActivity : AppCompatActivity() {
 
                     //Checking for User (New/Old) (optional--you do not have to show these toast messages)
                     if (user?.metadata?.creationTimestamp == user?.metadata?.lastSignInTimestamp) {
-                        //This is a New User
+                        // This is a New User
+                        val userId = user?.uid
+                        val userData = hashMapOf(
+                            "uid" to userId,
+                            "email" to user?.email,
+                            "displayName" to user?.displayName
+                        )
+
+                        if (userId != null) {
+                            fStore.collection("users").document(userId)
+                                .set(userData)
+                                .addOnSuccessListener {
+                                    Log.d(TAG, "User document created successfully in Firestore.")
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.e(TAG, "Error writing user document", e)
+                                }
+                        }
+
                         Toast.makeText(this, "Welcome New User!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        //This is a returning user
-                        Toast.makeText(this, "Welcome Back!", Toast.LENGTH_SHORT).show()
                     }
 
                     // Since the user signed in, the user can go back to main activity

@@ -11,57 +11,85 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import com.google.firebase.firestore.FirebaseFirestore
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
-class UserTracksAdapter(private val tracks: ArrayList<Track>) :
-    RecyclerView.Adapter<UserTracksAdapter.MyViewHolder>() {
+class UserTracksAdapter(
+    private val tracks: ArrayList<Track>,
+    private val userId: String
+) : RecyclerView.Adapter<UserTracksAdapter.MyViewHolder>() {
 
     private val baseURL = "https://ws.audioscrobbler.com/"
     private val apiKEY = "4d71bfa02b7255770d74c8147ad16883"
-
     private val TAG = "UserTracksAdapter"
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val songName = itemView.findViewById<TextView>(R.id.song_name)
-        val artistName = itemView.findViewById<TextView>(R.id.artist_name)
-        val albumArt = itemView.findViewById<ImageView>(R.id.album_art)
-        val playcount = itemView.findViewById<TextView>(R.id.playcount)
+        val songName: TextView = itemView.findViewById(R.id.song_name)
+        val artistName: TextView = itemView.findViewById(R.id.artist_name)
+        val albumArt: ImageView = itemView.findViewById(R.id.album_art)
+        val playcount: TextView = itemView.findViewById(R.id.playcount)
 
         init {
-            // Attach a click listener to the entire row view
             itemView.setOnClickListener {
-                // adapterPosition refers to the position of the item associated with the ViewHolder within the RecyclerView's dataset
                 val selectedItem = adapterPosition
-                Toast.makeText(itemView.context, "You clicked on $selectedItem", Toast.LENGTH_SHORT).show()
+                if (selectedItem == RecyclerView.NO_POSITION) return@setOnClickListener
+
+                val db = FirebaseFirestore.getInstance()
+                val track = tracks[selectedItem]
+                val trackId = "${track.artist.name}-${track.name}"
+                val favRef = db.collection("users").document(userId)
+                    .collection("favorites").document(trackId)
+
+                val isFavorited = itemView.tag as? Boolean ?: false
+
+                if (isFavorited) {
+                    favRef.delete().addOnSuccessListener {
+                        itemView.setBackgroundColor(
+                            ContextCompat.getColor(itemView.context, android.R.color.transparent)
+                        )
+                        itemView.tag = false
+                        Toast.makeText(itemView.context, "Removed from favorites", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener {
+                        Log.e(TAG, "Failed to remove favorite", it)
+                    }
+                } else {
+                    val data = mapOf(
+                        "name" to track.name,
+                        "artist" to track.artist.name,
+                        "url" to track.url
+                    )
+                    favRef.set(data).addOnSuccessListener {
+                        itemView.setBackgroundColor(
+                            ContextCompat.getColor(itemView.context, android.R.color.holo_green_light)
+                        )
+                        itemView.tag = true
+                        Toast.makeText(itemView.context, "Added to favorites", Toast.LENGTH_SHORT).show()
+                    }.addOnFailureListener {
+                        Log.e(TAG, "Failed to add favorite", it)
+                    }
+                }
             }
 
-
-            // Set onLongClickListener to show a toast message and remove the selected row item from the list
-            // Make sure to add inner in front of MyViewHolder class to get access of object of outer class such as contacts array
             itemView.setOnLongClickListener {
-
                 val selectedItem = adapterPosition
                 if (selectedItem != RecyclerView.NO_POSITION) {
                     val track = tracks[selectedItem]
-                    val url = track.url // Ensure the Track model has a valid `url` field
+                    val url = track.url
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     itemView.context.startActivity(intent)
                 }
                 return@setOnLongClickListener true
             }
-
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row_item_tracks, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.row_item_tracks, parent, false)
         return MyViewHolder(view)
     }
 
@@ -79,8 +107,28 @@ class UserTracksAdapter(private val tracks: ArrayList<Track>) :
             holder.playcount.text = currentItem.playcount.toString()
         }
 
+        // Check Firestore for favorite status
+        val db = FirebaseFirestore.getInstance()
+        val trackId = "${currentItem.artist.name}-${currentItem.name}"
 
-        // Use a callback to load the image asynchronously
+        val favRef = db.collection("users").document(userId)
+            .collection("favorites").document(trackId)
+
+        favRef.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                holder.itemView.setBackgroundColor(
+                    ContextCompat.getColor(holder.itemView.context, android.R.color.holo_green_light)
+                )
+                holder.itemView.tag = true
+            } else {
+                holder.itemView.setBackgroundColor(
+                    ContextCompat.getColor(holder.itemView.context, android.R.color.transparent)
+                )
+                holder.itemView.tag = false
+            }
+        }
+
+        // Load album artwork
         fetchTrackArtwork(currentItem.artist.name, currentItem.name) { imageUrl ->
             Glide.with(holder.itemView.context)
                 .load(imageUrl)
@@ -112,7 +160,6 @@ class UserTracksAdapter(private val tracks: ArrayList<Track>) :
                         sizeOrder.indexOf(it.size)
                     }
                     val imageUrl = highestQualityImage?.text ?: ""
-                    Log.d(TAG, "Image URL: $imageUrl")
                     callback(imageUrl)
                 }
 

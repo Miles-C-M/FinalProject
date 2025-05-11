@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,7 +60,13 @@ class ThirdFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         // Setup RecyclerView
         userTracksList = ArrayList()
-        adapter = UserTracksAdapter(userTracksList)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        if (userId == null) {
+            Toast.makeText(requireContext(), "User not signed in", Toast.LENGTH_SHORT).show()
+            return view
+        }
+        adapter = UserTracksAdapter(userTracksList, userId)
+
         recycler.adapter = adapter
         recycler.layoutManager = LinearLayoutManager(requireContext())
 
