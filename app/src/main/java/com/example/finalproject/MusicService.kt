@@ -1,3 +1,4 @@
+// Interface for last.fm api
 package com.example.finalproject
 
 import retrofit2.Call

@@ -1,3 +1,4 @@
+// Data classes for ticketmaster api
 package com.example.finalproject
 
 import com.google.gson.annotations.SerializedName

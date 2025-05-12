@@ -1,7 +1,6 @@
 package com.example.finalproject
 
 import TrackAdapter
-import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -33,7 +32,7 @@ class SecondFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.userRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        // Adapter with long-click delete functionality
+        // Long click to remove tracks
         trackAdapter = TrackAdapter(tracks) { track ->
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {
@@ -41,7 +40,6 @@ class SecondFragment : Fragment() {
                     .document(currentUser.uid)
                     .collection("favorites")
 
-                // Query for the track using its unique fields
                 favoritesRef
                     .whereEqualTo("name", track.name)
                     .whereEqualTo("artist", track.artist)

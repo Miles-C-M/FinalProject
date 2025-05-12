@@ -1,3 +1,4 @@
+// Adapter for ticketmaster api recycler
 package com.example.finalproject
 
 import android.content.Intent

@@ -1,3 +1,4 @@
+// Data class for search tracks
 package com.example.finalproject
 
 data class TrackData(
