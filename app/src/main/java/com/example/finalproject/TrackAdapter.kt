@@ -8,7 +8,10 @@ import com.bumptech.glide.Glide
 import com.example.finalproject.R
 import com.example.finalproject.TrackData
 
-class TrackAdapter(private val tracks: List<TrackData>) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
+class TrackAdapter(
+    private val tracks: List<TrackData>,
+    private val onLongClick: (TrackData) -> Unit
+) : RecyclerView.Adapter<TrackAdapter.TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_track, parent, false)
@@ -17,7 +20,7 @@ class TrackAdapter(private val tracks: List<TrackData>) : RecyclerView.Adapter<T
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = tracks[position]
-        holder.bind(track)
+        holder.bind(track, onLongClick)
     }
 
     override fun getItemCount(): Int = tracks.size
@@ -27,7 +30,7 @@ class TrackAdapter(private val tracks: List<TrackData>) : RecyclerView.Adapter<T
         private val artist: TextView = itemView.findViewById(R.id.artist_name)
         private val trackImage: ImageView = itemView.findViewById(R.id.album_art)
 
-        fun bind(track: TrackData) {
+        fun bind(track: TrackData, onLongClick: (TrackData) -> Unit) {
             trackName.text = track.name
             artist.text = track.artist
 
@@ -36,6 +39,11 @@ class TrackAdapter(private val tracks: List<TrackData>) : RecyclerView.Adapter<T
                 .placeholder(R.drawable.app_logo)
                 .error(R.drawable.app_logo)
                 .into(trackImage)
+
+            itemView.setOnLongClickListener {
+                onLongClick(track)
+                true
+            }
         }
     }
 }

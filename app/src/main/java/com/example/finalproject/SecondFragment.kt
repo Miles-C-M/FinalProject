@@ -32,7 +32,39 @@ class SecondFragment : Fragment() {
         // Initialize RecyclerView
         val recyclerView: RecyclerView = view.findViewById(R.id.userRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        trackAdapter = TrackAdapter(tracks)
+
+        // Adapter with long-click delete functionality
+        trackAdapter = TrackAdapter(tracks) { track ->
+            val currentUser = FirebaseAuth.getInstance().currentUser
+            if (currentUser != null) {
+                val favoritesRef = db.collection("users")
+                    .document(currentUser.uid)
+                    .collection("favorites")
+
+                // Query for the track using its unique fields
+                favoritesRef
+                    .whereEqualTo("name", track.name)
+                    .whereEqualTo("artist", track.artist)
+                    .get()
+                    .addOnSuccessListener { documents ->
+                        for (doc in documents) {
+                            favoritesRef.document(doc.id).delete()
+                                .addOnSuccessListener {
+                                    Log.d(TAG, "Track deleted: ${track.name}")
+                                    tracks.remove(track)
+                                    trackAdapter.notifyDataSetChanged()
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w(TAG, "Failed to delete track", e)
+                                }
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Failed to query for deletion", e)
+                    }
+            }
+        }
+
         recyclerView.adapter = trackAdapter
 
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -40,34 +72,27 @@ class SecondFragment : Fragment() {
         if (currentUser == null) {
             Log.d(TAG, "onCreateView: currentUser is null")
         } else {
-            // Fetch user data
             view.findViewById<TextView>(R.id.usernameText).text = currentUser.displayName
 
             val photoUrl = currentUser.photoUrl
-            if (photoUrl != null) {
-                Glide.with(this)
-                    .load(photoUrl)
-                    .placeholder(R.drawable.app_logo)
-                    .error(R.drawable.app_logo)
-                    .into(view.findViewById<ImageView>(R.id.userImage))
-            } else {
-                Glide.with(this)
-                    .load(R.drawable.app_logo)
-                    .into(view.findViewById<ImageView>(R.id.userImage))
-            }
+            Glide.with(this)
+                .load(photoUrl ?: R.drawable.app_logo)
+                .placeholder(R.drawable.app_logo)
+                .error(R.drawable.app_logo)
+                .into(view.findViewById<ImageView>(R.id.userImage))
 
-            // Fetch user's favorited tracks from Firestore
+            // Fetch user's favorited tracks
             db.collection("users")
                 .document(currentUser.uid)
                 .collection("favorites")
                 .get()
                 .addOnSuccessListener { result ->
-                    tracks.clear()  // Clear the existing data
+                    tracks.clear()
                     for (document in result) {
                         val track = document.toObject(TrackData::class.java)
-                        tracks.add(track)  // Add the new track to the list
+                        tracks.add(track)
                     }
-                    trackAdapter.notifyDataSetChanged()  // Notify the adapter to update the RecyclerView
+                    trackAdapter.notifyDataSetChanged()
                 }
                 .addOnFailureListener { exception ->
                     Log.w(TAG, "Error getting documents: ", exception)
