@@ -1,8 +1,9 @@
+// Fragment for user profile
 package com.example.finalproject
 
-import TrackAdapter
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,7 @@ class SecondFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.userRecycler)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        // Long click to remove tracks
+        // Adapter with long-click delete functionality and click to open URL
         trackAdapter = TrackAdapter(tracks) { track ->
             val currentUser = FirebaseAuth.getInstance().currentUser
             if (currentUser != null) {
@@ -40,6 +41,7 @@ class SecondFragment : Fragment() {
                     .document(currentUser.uid)
                     .collection("favorites")
 
+                // Query for the track using its unique fields
                 favoritesRef
                     .whereEqualTo("name", track.name)
                     .whereEqualTo("artist", track.artist)
@@ -51,6 +53,13 @@ class SecondFragment : Fragment() {
                                     Log.d(TAG, "Track deleted: ${track.name}")
                                     tracks.remove(track)
                                     trackAdapter.notifyDataSetChanged()
+
+                                    // Show Toast message when the track is removed
+                                    Toast.makeText(
+                                        context,
+                                        "${track.name} by ${track.artist} removed from favorites",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                                 .addOnFailureListener { e ->
                                     Log.w(TAG, "Failed to delete track", e)

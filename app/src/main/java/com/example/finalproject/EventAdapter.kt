@@ -134,7 +134,7 @@ class EventAdapter(private val events: ArrayList<Event>) : RecyclerView.Adapter<
         if (highestQualityImage != null) {
             Glide.with(context)
                 .load(highestQualityImage.url)
-                .placeholder(R.drawable.ic_launcher_background) // In case the image is not loaded show this placeholder image
+                .placeholder(R.drawable.app_logo) // In case the image is not loaded show this placeholder image
                 .circleCrop() // optional - Circle image with rounded corners
                 .into(holder.eventImage)
         }

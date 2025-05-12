@@ -1,4 +1,7 @@
 // Adapter for search tracks
+package com.example.finalproject
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,17 +24,17 @@ class TrackAdapter(
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = tracks[position]
-        holder.bind(track, onLongClick)
+        holder.bind(track)
     }
 
     override fun getItemCount(): Int = tracks.size
 
-    class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val trackName: TextView = itemView.findViewById(R.id.song_name)
         private val artist: TextView = itemView.findViewById(R.id.artist_name)
         private val trackImage: ImageView = itemView.findViewById(R.id.album_art)
 
-        fun bind(track: TrackData, onLongClick: (TrackData) -> Unit) {
+        fun bind(track: TrackData) {
             trackName.text = track.name
             artist.text = track.artist
 
@@ -41,9 +44,16 @@ class TrackAdapter(
                 .error(R.drawable.app_logo)
                 .into(trackImage)
 
+            // Handle long click for track removal
             itemView.setOnLongClickListener {
-                onLongClick(track)
+                onLongClick(track)  // Remove the track from the favorites
                 true
+            }
+
+            // Handle single click for opening the track's URL
+            itemView.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(track.url))
+                itemView.context.startActivity(intent)
             }
         }
     }

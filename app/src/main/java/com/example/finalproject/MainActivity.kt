@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
     private var lastShakeTime: Long = 0
-    private val shakeThreshold = 15.0  // Acceleration threshold to trigger shake (m/s²)
+    private val shakeThreshold = 15.0 // Acceleration threshold to trigger shake (m/s²)
     private val debounceTime = 1000L   // 1 second debounce to avoid repeated triggers
 
     override fun onCreate(savedInstanceState: Bundle?) {
