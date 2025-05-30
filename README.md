@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/1c44f81e-6158-4857-b094-1e9ab9b16de4)
+
 🎵 Music Favorites App
 A retro-inspired Android app that allows users to search for tracks, mark their favorites, and explore concert events — all while embracing a playful, forum-style aesthetic.
 
